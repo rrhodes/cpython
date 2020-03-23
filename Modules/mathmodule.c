@@ -3429,12 +3429,14 @@ math.isprime -> bool
 
 Determine if non-negative integer n is prime.
 
+Applying the Agrawal-Kayal-Saxena (AKS) primality test.
+
 Return True if n is a prime non-negative integer, otherwise return False.
 [clinic start generated code]*/
 
 static int
 math_isprime_impl(PyObject *module, long n)
-/*[clinic end generated code: output=8eeb93ba710b5494 input=dff5e54f9711beed]*/
+/*[clinic end generated code: output=8eeb93ba710b5494 input=2ede18bb604224cc]*/
 {
     if (n < 0) {
         PyErr_SetString(PyExc_ValueError,
@@ -3442,22 +3444,73 @@ math_isprime_impl(PyObject *module, long n)
         return -1;
     }
 
-    if (n <= 3) {
-        return n > 1;
+    if (n == 2) {
+        return 1;
     };
 
-    if (n % 2 == 0 || n % 3 == 0) {
+    if (n < 2 || n % 2 == 0) {
         return 0;
     };
 
-    int i = 5;
+    double log_base_two_n = log2(n);
+    double x;
+    double i = 2;
 
-    while (pow((float) i, 2) <= n) {
-        if (n % i == 0 || n % (i + 2) == 0) {
+
+    while (i <= log_base_two_n) {
+        x = pow((float) n, 1/i);
+
+        if (floor(x) == x) {
             return 0;
-        };
-        i += 6;
-    };
+        }
+
+        i++;
+    }
+
+    int max_k = floor(pow(log_base_two_n, 2.0));
+    int quintic_log_base_two_n = ceil(pow(log_base_two_n, 5.0));
+    int max_r = quintic_log_base_two_n > 3 ? quintic_log_base_two_n : 3;
+    int r = 1;
+    int next_r = 1;
+    int remainder;
+
+    while (next_r && r < max_r) {
+        next_r = 0;
+
+        for (int k = 0; !next_r && k <= max_k; k++) {
+            remainder = (int) pow((float) n, (float) k) % r;
+            next_r = remainder == 0 || remainder == 1;
+        }
+
+        r++;
+    }
+    r--;
+
+    int euler_totient = 1;
+    long gcd;
+    PyObject* gcd_pyobject;
+
+    for (int a = r; a > 1; a--) {
+        PyObject* gcd_args[2] = {PyLong_FromLong(a), PyLong_FromLong(n)};
+        gcd_pyobject = math_gcd(module, gcd_args, sizeof(gcd_args) / sizeof(long));
+        gcd = PyLong_AsLong(gcd_pyobject);
+
+        if (gcd > 1 && gcd < n) {
+            return 0;
+        } else if (gcd == 1.0) {
+            euler_totient++;
+        }
+    }
+
+    if (n <= r && n <= 5690034) {
+        return 1;
+    }
+
+    int max = floor(log_base_two_n * pow((float) euler_totient, 0.5));
+
+    for (int a = 1; a <= max; a++) {
+        return -1;
+    }
 
     return 1;
 }

@@ -872,6 +872,8 @@ PyDoc_STRVAR(math_isprime__doc__,
 "\n"
 "Determine if non-negative integer n is prime.\n"
 "\n"
+"Applying the Agrawal-Kayal-Saxena (AKS) primarily test.\n"
+"\n"
 "Return True if n is a prime non-negative integer, otherwise return False.");
 
 #define MATH_ISPRIME_METHODDEF    \
@@ -905,4 +907,4 @@ math_isprime(PyObject *module, PyObject *arg)
 exit:
     return return_value;
 }
-/*[clinic end generated code: output=9f44af9166ff02e9 input=a9049054013a1b77]*/
+/*[clinic end generated code: output=aa085757603bc1d3 input=a9049054013a1b77]*/

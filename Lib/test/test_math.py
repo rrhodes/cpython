@@ -924,8 +924,6 @@ class MathTests(unittest.TestCase):
         composite_numbers = [0, 1, 4, 6, 8, 9, 10, 15, 21, 25, 32, 39, 49, 51, 57, 63, 65, 81, 85, 87, 91, 93, 95, 100]
         prime_numbers = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
 
-        self.assertEqual(math.ulp(INF), INF)
-
         for composite_number in composite_numbers:
             self.assertFalse(math.isprime(composite_number))
 
