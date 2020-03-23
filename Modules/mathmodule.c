@@ -3421,6 +3421,46 @@ math_ulp_impl(PyObject *module, double x)
     return x2 - x;
 }
 
+/*[clinic input]
+math.isprime -> bool
+
+    n: long
+    /
+
+Determine if non-negative integer n is prime.
+
+Return True if n is a prime non-negative integer, otherwise return False.
+[clinic start generated code]*/
+
+static int
+math_isprime_impl(PyObject *module, long n)
+/*[clinic end generated code: output=8eeb93ba710b5494 input=dff5e54f9711beed]*/
+{
+    if (n < 0) {
+        PyErr_SetString(PyExc_ValueError,
+                        "non-negative integer argument expected, got negative integer argument");
+        return -1;
+    }
+
+    if (n <= 3) {
+        return n > 1;
+    };
+
+    if (n % 2 == 0 || n % 3 == 0) {
+        return 0;
+    };
+
+    int i = 5;
+
+    while (pow((float) i, 2) <= n) {
+        if (n % i == 0 || n % (i + 2) == 0) {
+            return 0;
+        };
+        i += 6;
+    };
+
+    return 1;
+}
 
 static PyMethodDef math_methods[] = {
     {"acos",            math_acos,      METH_O,         math_acos_doc},
@@ -3453,6 +3493,7 @@ static PyMethodDef math_methods[] = {
     MATH_ISFINITE_METHODDEF
     MATH_ISINF_METHODDEF
     MATH_ISNAN_METHODDEF
+    MATH_ISPRIME_METHODDEF
     MATH_ISQRT_METHODDEF
     {"lcm",             (PyCFunction)(void(*)(void))math_lcm,       METH_FASTCALL,  math_lcm_doc},
     MATH_LDEXP_METHODDEF

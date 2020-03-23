@@ -865,4 +865,44 @@ math_ulp(PyObject *module, PyObject *arg)
 exit:
     return return_value;
 }
-/*[clinic end generated code: output=1eae2b3ef19568fa input=a9049054013a1b77]*/
+
+PyDoc_STRVAR(math_isprime__doc__,
+"isprime($module, n, /)\n"
+"--\n"
+"\n"
+"Determine if non-negative integer n is prime.\n"
+"\n"
+"Return True if n is a prime non-negative integer, otherwise return False.");
+
+#define MATH_ISPRIME_METHODDEF    \
+    {"isprime", (PyCFunction)math_isprime, METH_O, math_isprime__doc__},
+
+static int
+math_isprime_impl(PyObject *module, long n);
+
+static PyObject *
+math_isprime(PyObject *module, PyObject *arg)
+{
+    PyObject *return_value = NULL;
+    long n;
+    int _return_value;
+
+    if (PyFloat_Check(arg)) {
+        PyErr_SetString(PyExc_TypeError,
+                        "integer argument expected, got float" );
+        goto exit;
+    }
+    n = PyLong_AsLong(arg);
+    if (n == -1 && PyErr_Occurred()) {
+        goto exit;
+    }
+    _return_value = math_isprime_impl(module, n);
+    if ((_return_value == -1) && PyErr_Occurred()) {
+        goto exit;
+    }
+    return_value = PyBool_FromLong((long)_return_value);
+
+exit:
+    return return_value;
+}
+/*[clinic end generated code: output=9f44af9166ff02e9 input=a9049054013a1b77]*/
