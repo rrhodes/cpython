@@ -82,6 +82,7 @@ class NetworkedNNTPTestsMixin:
         desc = self.server.description(self.GROUP_NAME)
         _check_desc(desc)
         # Another sanity check
+        print(desc)
         self.assertIn("Python", desc)
         # With a pattern
         desc = self.server.description(self.GROUP_PAT)
@@ -96,6 +97,7 @@ class NetworkedNNTPTestsMixin:
         self.assertTrue(
             resp.startswith("215 ") or resp.startswith("282 "), resp)
         self.assertIsInstance(descs, dict)
+        print(descs)
         desc = descs[self.GROUP_NAME]
         self.assertEqual(desc, self.server.description(self.GROUP_NAME))
 
