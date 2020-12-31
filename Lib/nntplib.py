@@ -641,22 +641,32 @@ class NNTP:
         line_pat = re.compile('^(?P<group>[^ \t]+)[ \t]+(.*)$')
         # Try the more std (acc. to RFC2980) LIST NEWSGROUPS first
         resp, lines = self._longcmdstring('LIST NEWSGROUPS ' + group_pattern)
+        print('NEWSGROUPS')
+        print(resp)
+        print(line)
         if not resp.startswith('215'):
+            print('XGTITLE')
             # Now the deprecated XGTITLE.  This either raises an error
             # or succeeds with the same output structure as LIST
             # NEWSGROUPS.
             resp, lines = self._longcmdstring('XGTITLE ' + group_pattern)
+            print(resp)
+            print(line)
         groups = {}
         for raw_line in lines:
             match = line_pat.search(raw_line.strip())
             if match:
                 name, desc = match.group(1, 2)
                 if not return_all:
+                    print('DESC')
+                    print(desc)
                     return desc
                 groups[name] = desc
         if return_all:
+            print('return_all')
             return resp, groups
         else:
+            print('nothing')
             # Nothing found
             return ''
 
