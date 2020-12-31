@@ -97,8 +97,9 @@ class NetworkedNNTPTestsMixin:
         self.assertTrue(
             resp.startswith("215 ") or resp.startswith("282 "), resp)
         self.assertIsInstance(descs, dict)
+        print(resp)
         print(descs)
-        desc = descs[self.GROUP_NAME]
+        desc = desc.get(self.GROUP_NAME)
         self.assertEqual(desc, self.server.description(self.GROUP_NAME))
 
     def test_group(self):
