@@ -643,7 +643,7 @@ class NNTP:
         resp, lines = self._longcmdstring('LIST NEWSGROUPS ' + group_pattern)
         print('NEWSGROUPS')
         print(resp)
-        print(line)
+        print(lines)
         if not resp.startswith('215'):
             print('XGTITLE')
             # Now the deprecated XGTITLE.  This either raises an error
@@ -651,7 +651,7 @@ class NNTP:
             # NEWSGROUPS.
             resp, lines = self._longcmdstring('XGTITLE ' + group_pattern)
             print(resp)
-            print(line)
+            print(lines)
         groups = {}
         for raw_line in lines:
             match = line_pat.search(raw_line.strip())
